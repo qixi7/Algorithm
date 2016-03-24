@@ -1,0 +1,17 @@
+public boolean contains(String A, String B) 
+{  
+        int[] array = new int[26];  
+          
+        //store the characters in A to array  
+        for (int i = 0; i < A.length(); i++) {  
+            array[A.charAt(i) - 'A'] += 1;  
+        }  
+          
+        //check whether all the characters in B exist in A  
+        for (int j = 0; j < B.length(); j++) {  
+            array[B.charAt(j) - 'A'] -= 1;  
+            if (array[B.charAt(j) - 'A'] < 0) return false;  
+        }  
+          
+        return true;  
+}  

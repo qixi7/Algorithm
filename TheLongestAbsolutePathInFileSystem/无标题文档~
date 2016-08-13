@@ -1,0 +1,30 @@
+static class DirEntry {
+  String dirName;
+  int level;
+  int curLen;
+}
+
+int getLongestAbsolutePathInFileSystem(String fileSystem_) {
+  Stack<DirEntry> stack = new Stack<>();
+  int maxLen = 0;
+  for (String line : fileSystem_.split("\n")) {
+    if (line.isEmpty()) continue;
+    int curLevel = 0;
+    while (line.charAt(curLevel) == '\t')
+      curLevel++;
+    String name = line.substring(curLevel);
+    if (name.indexOf('.') > 0) { // file
+      maxLen = Math.max(maxLen, (stack.isEmpty() ? 0 : stack.peek().curLen + 1) + name.length());
+    } else { // dir
+      while (!stack.isEmpty() && stack.peek().level >= curLevel) {
+        stack.pop();
+      }
+      DirEntry entry = new DirEntry();
+      entry.dirName = name;
+      entry.level = curLevel;
+      entry.curLen = (curLevel == 0 ? 0 : stack.peek().curLen + 1) + name.length();
+      stack.push(entry);
+    }
+  }
+  return maxLen;
+}
